@@ -14,12 +14,12 @@ class Ielement extends HTMLDivElement {
         } = {},
     ) {
         super()
-        this.setCss(css, hoverCss)
+        this.setCSS(css, hoverCss)
 
         container.appendChild(this)
     }
 
-    setCss(css: any, hoverCss: any) {
+    setCSS(css: any, hoverCss: any) {
         // ユニークなクラス名を生成
         const uniqueClass = `i-element-${Ielement.idCount++}`
         this.classList.add(uniqueClass)

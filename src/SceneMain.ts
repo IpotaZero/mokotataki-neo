@@ -274,6 +274,3 @@ const SceneMain = class {
         }
     }
 }
-
-const container = document.getElementById("container") as HTMLDivElement
-if (!container) throw new Error("no container")

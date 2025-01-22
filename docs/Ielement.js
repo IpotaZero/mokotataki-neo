@@ -15,10 +15,10 @@ class Ielement extends HTMLDivElement {
     constructor(container, { css = {}, hoverCss = {}, } = {}) {
         super();
         _Ielement_styleElement.set(this, document.createElement("style"));
-        this.setCss(css, hoverCss);
+        this.setCSS(css, hoverCss);
         container.appendChild(this);
     }
-    setCss(css, hoverCss) {
+    setCSS(css, hoverCss) {
         // ユニークなクラス名を生成
         const uniqueClass = `i-element-${Ielement.idCount++}`;
         this.classList.add(uniqueClass);

@@ -14,6 +14,9 @@ const textCSS = {
     zIndex: "1000",
 };
 const oh = new Audio("ビシッとツッコミ3.mp3");
+const container = document.getElementById("container");
+if (!container)
+    throw new Error("no container");
 const wrapCharactersInSpan = (element, classPrefix = "char") => {
     // テキストを取得
     const text = element.textContent ?? "";

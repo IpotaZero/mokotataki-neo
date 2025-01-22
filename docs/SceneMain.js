@@ -228,7 +228,4 @@ const SceneMain = (_a = class {
         }
     },
     _a);
-const container = document.getElementById("container");
-if (!container)
-    throw new Error("no container");
 //# sourceMappingURL=SceneMain.js.map

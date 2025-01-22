@@ -20,6 +20,9 @@ const textCSS = {
 
 const oh = new Audio("ビシッとツッコミ3.mp3")
 
+const container = document.getElementById("container") as HTMLDivElement
+if (!container) throw new Error("no container")
+
 const wrapCharactersInSpan = (element: HTMLElement, classPrefix = "char") => {
     // テキストを取得
     const text = element.textContent ?? ""
