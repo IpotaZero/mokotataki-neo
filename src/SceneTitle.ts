@@ -1,4 +1,4 @@
-class SceneTitle {
+const SceneTitle = class {
     constructor() {
         ;[...container.children].forEach((c) => c.remove())
 

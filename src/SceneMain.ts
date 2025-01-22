@@ -1,4 +1,4 @@
-class SceneMain {
+const SceneMain = class {
     #scoreText: Itext
     #score = 0
 

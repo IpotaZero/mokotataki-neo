@@ -1,5 +1,5 @@
 "use strict";
-class SceneTitle {
+const SceneTitle = class {
     constructor() {
         ;
         [...container.children].forEach((c) => c.remove());
@@ -162,5 +162,5 @@ class SceneTitle {
             };
         });
     }
-}
+};
 //# sourceMappingURL=SceneTitle.js.map

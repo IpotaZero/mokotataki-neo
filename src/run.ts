@@ -20,7 +20,7 @@ const textCSS = {
 
 const oh = new Audio("ビシッとツッコミ3.mp3")
 
-function wrapCharactersInSpan(element: HTMLElement, classPrefix = "char") {
+const wrapCharactersInSpan = (element: HTMLElement, classPrefix = "char") => {
     // テキストを取得
     const text = element.textContent ?? ""
 
