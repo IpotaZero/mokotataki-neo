@@ -173,6 +173,7 @@ _SceneMain_scoreText = new WeakMap(), _SceneMain_score = new WeakMap(), _SceneMa
     }), "f");
     __classPrivateFieldGet(this, _SceneMain_block, "f").appendChild(__classPrivateFieldGet(this, _SceneMain_img, "f"));
     __classPrivateFieldGet(this, _SceneMain_block, "f").onclick = () => {
+        oh.currentTime = 0;
         oh.play();
         const { top, left } = __classPrivateFieldGet(this, _SceneMain_block, "f").getClientRects()[0];
         const { x, y } = container.getClientRects()[0];

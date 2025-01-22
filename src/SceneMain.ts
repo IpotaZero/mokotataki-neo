@@ -224,6 +224,7 @@ class SceneMain {
         this.#block.appendChild(this.#img)
 
         this.#block.onclick = () => {
+            oh.currentTime = 0
             oh.play()
 
             const { top, left } = this.#block.getClientRects()[0]
