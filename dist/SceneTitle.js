@@ -29,7 +29,7 @@ class SceneTitle {
             `;
             document.head.appendChild(style);
         }
-        const icommand = new Icommand(container, new Idict({ "": ["はじめる", "せつめい"] }), {
+        const icommand = new Icommand(container, new Idict({ "": ["はじめる", "せつめい", "くれじっと"] }), {
             text: {
                 css: {
                     ...textCSS,
@@ -38,15 +38,16 @@ class SceneTitle {
                     height: "30%",
                     pointerEvents: "",
                     cursor: "pointer",
+                    backgroundColor: "rgba(0, 0, 0, 0.3)",
+                    borderRadius: "5px",
                 },
                 hoverCss: {
-                    borderRadius: "5px",
                     border: "azure 0.3vh solid",
                 },
             },
             command: {
                 css: {
-                    top: "70%",
+                    top: "65%",
                     width: "30%",
                     height: "30%",
                     borderRadius: "5px",
@@ -124,5 +125,42 @@ class SceneTitle {
                 icommand.cancel(1);
             };
         });
+        icommand.on("2", async () => {
+            const res = await fetch("credit.html");
+            const html = await res.text();
+            const itext = new Itext(container, html, {
+                speed: 200,
+                css: {
+                    ...textCSS,
+                    top: "30%",
+                    fontSize: "4vh",
+                    display: "inline",
+                    textAlign: "left",
+                    width: "100%",
+                    paddingLeft: "10%",
+                    pointerEvents: "",
+                },
+            });
+            const back = new Itext(container, "戻る", {
+                css: {
+                    ...textCSS,
+                    top: "90%",
+                    pointerEvents: "",
+                    borderRadius: "5%",
+                    width: "20%",
+                    height: "8%",
+                },
+                hoverCss: {
+                    border: "azure 0.3vh solid",
+                    cursor: "pointer",
+                },
+            });
+            back.onclick = () => {
+                itext.remove();
+                back.remove();
+                icommand.cancel(1);
+            };
+        });
     }
 }
+//# sourceMappingURL=SceneTitle.js.map

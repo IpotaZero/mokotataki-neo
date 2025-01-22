@@ -1,4 +1,6 @@
 class Ielement extends HTMLDivElement {
+    static idCount = 0
+
     #styleElement = document.createElement("style")
 
     constructor(
@@ -19,7 +21,7 @@ class Ielement extends HTMLDivElement {
 
     setCss(css: any, hoverCss: any) {
         // ユニークなクラス名を生成
-        const uniqueClass = `i-element-${Math.random().toString(36).substring(2, 9)}`
+        const uniqueClass = `i-element-${Ielement.idCount++}`
         this.classList.add(uniqueClass)
 
         // キャメルケースをケバブケースに変換する関数

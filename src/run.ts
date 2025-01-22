@@ -18,7 +18,7 @@ const textCSS = {
     zIndex: "1000",
 }
 
-const oh = new Audio("maru.wav")
+const oh = new Audio("ビシッとツッコミ3.mp3")
 
 function wrapCharactersInSpan(element: HTMLElement, classPrefix = "char") {
     // テキストを取得

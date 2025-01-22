@@ -17,6 +17,8 @@ class SceneMain {
         this.#focus.src = "im11277821.png"
         this.#focus.classList.add("focus")
 
+        this.#focusSound.volume = 0.3
+
         this.#clearContainer()
 
         this.#frame = new Ielement(container, {
@@ -40,12 +42,17 @@ class SceneMain {
     }
 
     async #countdown() {
+        const sound = new Audio("カウントダウン電子音.mp3")
+        sound.volume = 0.3
+
         const itext = new Itext(container, "3", {
             css: {
                 ...textCSS,
                 fontSize: "16vh",
             },
         })
+
+        sound.play()
 
         itext.classList.add("fadeout")
 
@@ -71,7 +78,7 @@ class SceneMain {
         itext.innerText = "GO!"
         itext.classList.add("rolling")
 
-        await sleep(1000)
+        await sleep(1300)
 
         itext.remove()
     }
@@ -124,11 +131,50 @@ class SceneMain {
     }
 
     async #displayResult() {
-        const score = new Itext(container, `結果: ${this.#score}匹`, {
+        const drum = new Audio("ドラムロール.mp3")
+        const cymbal = this.#score < 10 ? new Audio("間抜け7.mp3") : new Audio("ロールの締め.mp3")
+
+        const result = new Itext(container, `結果...`, {
             css: {
                 ...textCSS,
+                fontSize: "6vh",
+                top: "30%",
             },
         })
+
+        drum.currentTime = 2.5
+
+        drum.play()
+
+        await new Promise((resolve) => {
+            drum.onended = resolve
+        })
+
+        const shadowColor =
+            ["", "lightGreen", "red", "rgba(240, 198, 16, 1)", "blue"][Math.floor(this.#score / 10)] ?? "Gold"
+
+        const css =
+            this.#score >= 40
+                ? {
+                      background:
+                          "linear-gradient(to right, #e60000, #f39800, #fff100, #009944,rgb(0, 180, 183),rgb(73, 77, 173),rgb(177, 49, 164))",
+                      webkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      textShadow: `0px 0px 12px #f2ffff30`,
+                  }
+                : {
+                      textShadow: `0px 0px 10px ${shadowColor}`,
+                  }
+
+        const score = new Itext(container, `${this.#score}匹${"!".repeat(this.#score / 10)}`, {
+            css: {
+                ...textCSS,
+                fontSize: "10vh",
+                ...css,
+            },
+        })
+
+        cymbal.play()
 
         await score.ready
 
@@ -143,6 +189,8 @@ class SceneMain {
                 ...textCSS,
 
                 pointerEvents: "",
+
+                backgroundColor: "rgba(0, 0, 0, 0.3)",
             },
             hoverCss: {
                 border: "azure 0.3vh solid",
@@ -217,11 +265,11 @@ class SceneMain {
         }
 
         if (this.#score == 10) {
-            this.#frame.style.boxShadow = "inset 0px 0px 8vh 2vh rgba(255, 255, 255, 0.3)"
+            this.#frame.style.boxShadow = "inset 0px 0px 8vh 2vh rgba(255, 255, 255, 0.2)"
         } else if (this.#score == 20) {
-            this.#frame.style.boxShadow = "inset 0px 0px 12vh 4vh rgba(255, 255, 255, 0.3)"
+            this.#frame.style.boxShadow = "inset 0px 0px 12vh 2vh rgba(255, 255, 255, 0.2)"
         } else if (this.#score == 30) {
-            // this.#frame.appendChild(this.#focus)
+            this.#frame.style.boxShadow = "inset 0px 0px 16vh 2vh rgba(255, 255, 255, 0.2)"
         }
     }
 }

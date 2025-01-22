@@ -13,7 +13,7 @@ const textCSS = {
     pointerEvents: "none",
     zIndex: "1000",
 };
-const oh = new Audio("maru.wav");
+const oh = new Audio("ビシッとツッコミ3.mp3");
 function wrapCharactersInSpan(element, classPrefix = "char") {
     // テキストを取得
     const text = element.textContent ?? "";
@@ -29,3 +29,4 @@ function wrapCharactersInSpan(element, classPrefix = "char") {
     // 元の要素の中身を置き換え
     element.innerHTML = wrappedText;
 }
+//# sourceMappingURL=run.js.map

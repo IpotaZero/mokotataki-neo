@@ -20,7 +20,7 @@ class Ielement extends HTMLDivElement {
     }
     setCss(css, hoverCss) {
         // ユニークなクラス名を生成
-        const uniqueClass = `i-element-${Math.random().toString(36).substring(2, 9)}`;
+        const uniqueClass = `i-element-${Ielement.idCount++}`;
         this.classList.add(uniqueClass);
         // キャメルケースをケバブケースに変換する関数
         const toKebabCase = (str) => {
@@ -50,6 +50,7 @@ class Ielement extends HTMLDivElement {
     }
 }
 _Ielement_styleElement = new WeakMap();
+Ielement.idCount = 0;
 customElements.define("i-element", Ielement, { extends: "div" });
 class Itext extends Ielement {
     constructor(container, text, { css = {}, hoverCss = {}, speed = 24, } = {}) {
@@ -184,3 +185,4 @@ const sleep = (ms) => new Promise((resolve) => {
         resolve();
     }, ms);
 });
+//# sourceMappingURL=Ielement.js.map

@@ -24,6 +24,7 @@ class SceneMain {
         __classPrivateFieldGet(this, _SceneMain_img, "f").src = "mokota.png";
         __classPrivateFieldGet(this, _SceneMain_focus, "f").src = "im11277821.png";
         __classPrivateFieldGet(this, _SceneMain_focus, "f").classList.add("focus");
+        __classPrivateFieldGet(this, _SceneMain_focusSound, "f").volume = 0.3;
         __classPrivateFieldGet(this, _SceneMain_instances, "m", _SceneMain_clearContainer).call(this);
         __classPrivateFieldSet(this, _SceneMain_frame, new Ielement(container, {
             css: {
@@ -40,12 +41,15 @@ _SceneMain_scoreText = new WeakMap(), _SceneMain_score = new WeakMap(), _SceneMa
     __classPrivateFieldGet(this, _SceneMain_instances, "m", _SceneMain_setupTimeLoop).call(this);
     __classPrivateFieldGet(this, _SceneMain_instances, "m", _SceneMain_createBlock).call(this);
 }, _SceneMain_countdown = async function _SceneMain_countdown() {
+    const sound = new Audio("カウントダウン電子音.mp3");
+    sound.volume = 0.3;
     const itext = new Itext(container, "3", {
         css: {
             ...textCSS,
             fontSize: "16vh",
         },
     });
+    sound.play();
     itext.classList.add("fadeout");
     await sleep(1000);
     itext.innerText = "2";
@@ -66,7 +70,7 @@ _SceneMain_scoreText = new WeakMap(), _SceneMain_score = new WeakMap(), _SceneMa
     await sleep(1000);
     itext.innerText = "GO!";
     itext.classList.add("rolling");
-    await sleep(1000);
+    await sleep(1300);
     itext.remove();
 }, _SceneMain_clearContainer = function _SceneMain_clearContainer() {
     ;
@@ -101,11 +105,39 @@ _SceneMain_scoreText = new WeakMap(), _SceneMain_score = new WeakMap(), _SceneMa
     };
     requestAnimationFrame(timeLoop);
 }, _SceneMain_displayResult = async function _SceneMain_displayResult() {
-    const score = new Itext(container, `結果: ${__classPrivateFieldGet(this, _SceneMain_score, "f")}匹`, {
+    const drum = new Audio("ドラムロール.mp3");
+    const cymbal = __classPrivateFieldGet(this, _SceneMain_score, "f") < 10 ? new Audio("間抜け7.mp3") : new Audio("ロールの締め.mp3");
+    const result = new Itext(container, `結果...`, {
         css: {
             ...textCSS,
+            fontSize: "6vh",
+            top: "30%",
         },
     });
+    drum.currentTime = 2.5;
+    drum.play();
+    await new Promise((resolve) => {
+        drum.onended = resolve;
+    });
+    const shadowColor = ["", "lightGreen", "red", "rgba(240, 198, 16, 1)", "blue"][Math.floor(__classPrivateFieldGet(this, _SceneMain_score, "f") / 10)] ?? "Gold";
+    const css = __classPrivateFieldGet(this, _SceneMain_score, "f") >= 40
+        ? {
+            background: "linear-gradient(to right, #e60000, #f39800, #fff100, #009944,rgb(0, 180, 183),rgb(73, 77, 173),rgb(177, 49, 164))",
+            webkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            textShadow: `0px 0px 12px #f2ffff30`,
+        }
+        : {
+            textShadow: `0px 0px 10px ${shadowColor}`,
+        };
+    const score = new Itext(container, `${__classPrivateFieldGet(this, _SceneMain_score, "f")}匹${"!".repeat(__classPrivateFieldGet(this, _SceneMain_score, "f") / 10)}`, {
+        css: {
+            ...textCSS,
+            fontSize: "10vh",
+            ...css,
+        },
+    });
+    cymbal.play();
     await score.ready;
     const back = new Itext(container, `戻る`, {
         css: {
@@ -115,6 +147,7 @@ _SceneMain_scoreText = new WeakMap(), _SceneMain_score = new WeakMap(), _SceneMa
             borderRadius: "5%",
             ...textCSS,
             pointerEvents: "",
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
         },
         hoverCss: {
             border: "azure 0.3vh solid",
@@ -168,15 +201,16 @@ _SceneMain_scoreText = new WeakMap(), _SceneMain_score = new WeakMap(), _SceneMa
         __classPrivateFieldGet(this, _SceneMain_focusSound, "f").play();
     }
     if (__classPrivateFieldGet(this, _SceneMain_score, "f") == 10) {
-        __classPrivateFieldGet(this, _SceneMain_frame, "f").style.boxShadow = "inset 0px 0px 8vh 2vh rgba(255, 255, 255, 0.3)";
+        __classPrivateFieldGet(this, _SceneMain_frame, "f").style.boxShadow = "inset 0px 0px 8vh 2vh rgba(255, 255, 255, 0.2)";
     }
     else if (__classPrivateFieldGet(this, _SceneMain_score, "f") == 20) {
-        __classPrivateFieldGet(this, _SceneMain_frame, "f").style.boxShadow = "inset 0px 0px 12vh 4vh rgba(255, 255, 255, 0.3)";
+        __classPrivateFieldGet(this, _SceneMain_frame, "f").style.boxShadow = "inset 0px 0px 12vh 2vh rgba(255, 255, 255, 0.2)";
     }
     else if (__classPrivateFieldGet(this, _SceneMain_score, "f") == 30) {
-        // this.#frame.appendChild(this.#focus)
+        __classPrivateFieldGet(this, _SceneMain_frame, "f").style.boxShadow = "inset 0px 0px 16vh 2vh rgba(255, 255, 255, 0.2)";
     }
 };
 const container = document.getElementById("container");
 if (!container)
     throw new Error("no container");
+//# sourceMappingURL=SceneMain.js.map
