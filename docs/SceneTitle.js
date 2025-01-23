@@ -1,9 +1,25 @@
 "use strict";
-const SceneTitle = class {
-    constructor() {
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _SceneTitle_instances, _SceneTitle_clearContainer, _SceneTitle_setupTitle, _SceneTitle_setupCommand, _a;
+const SceneTitle = (_a = class {
+        constructor() {
+            _SceneTitle_instances.add(this);
+            __classPrivateFieldGet(this, _SceneTitle_instances, "m", _SceneTitle_clearContainer).call(this);
+            __classPrivateFieldGet(this, _SceneTitle_instances, "m", _SceneTitle_setupTitle).call(this);
+            __classPrivateFieldGet(this, _SceneTitle_instances, "m", _SceneTitle_setupCommand).call(this);
+        }
+    },
+    _SceneTitle_instances = new WeakSet(),
+    _SceneTitle_clearContainer = function _SceneTitle_clearContainer() {
         ;
         [...container.children].forEach((c) => c.remove());
         [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
+    },
+    _SceneTitle_setupTitle = function _SceneTitle_setupTitle() {
         const title = new Itext(container, "もこたたき::NEO!", {
             css: {
                 top: "15%",
@@ -30,6 +46,8 @@ const SceneTitle = class {
             `;
             document.head.appendChild(style);
         }
+    },
+    _SceneTitle_setupCommand = function _SceneTitle_setupCommand() {
         const icommand = new Icommand(container, new Idict({ "": ["はじめる", "せつめい", "くれじっと"] }), {
             css: {
                 top: "65%",
@@ -123,8 +141,22 @@ const SceneTitle = class {
             };
         });
         icommand.on("2", async () => {
+            const loading = new Itext(container, "読み込み中...", {
+                speed: 200,
+                css: {
+                    ...textCSS,
+                    top: "30%",
+                    fontSize: "4vh",
+                    display: "inline",
+                    textAlign: "left",
+                    width: "100%",
+                    paddingLeft: "10%",
+                    pointerEvents: "",
+                },
+            });
             const res = await fetch("credit.html");
             const html = await res.text();
+            loading.remove();
             const itext = new Itext(container, html, {
                 speed: 200,
                 css: {
@@ -158,6 +190,6 @@ const SceneTitle = class {
                 icommand.cancel(1);
             };
         });
-    }
-};
+    },
+    _a);
 //# sourceMappingURL=SceneTitle.js.map

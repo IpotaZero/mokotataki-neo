@@ -1,8 +1,16 @@
 const SceneTitle = class {
     constructor() {
+        this.#clearContainer()
+        this.#setupTitle()
+        this.#setupCommand()
+    }
+
+    #clearContainer() {
         ;[...container.children].forEach((c) => c.remove())
         ;[...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove())
+    }
 
+    #setupTitle() {
         const title = new Itext(container, "もこたたき::NEO!", {
             css: {
                 top: "15%",
@@ -37,7 +45,9 @@ const SceneTitle = class {
 
             document.head.appendChild(style)
         }
+    }
 
+    #setupCommand() {
         const icommand = new Icommand(container, new Idict({ "": ["はじめる", "せつめい", "くれじっと"] }), {
             css: {
                 top: "65%",
@@ -158,8 +168,25 @@ const SceneTitle = class {
         })
 
         icommand.on("2", async () => {
+            const loading = new Itext(container, "読み込み中...", {
+                speed: 200,
+                css: {
+                    ...textCSS,
+                    top: "30%",
+                    fontSize: "4vh",
+                    display: "inline",
+                    textAlign: "left",
+                    width: "100%",
+                    paddingLeft: "10%",
+
+                    pointerEvents: "",
+                },
+            })
+
             const res = await fetch("credit.html")
             const html = await res.text()
+
+            loading.remove()
 
             const itext = new Itext(container, html, {
                 speed: 200,

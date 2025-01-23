@@ -43,9 +43,9 @@ type Selector =
     | `:not(${pseudoClassSelector | classSelector | idSelector | tagSelector})`
 
 type NestedCSS = {
-    [key in keyof CSSStyleDeclaration]?: Partial<CSSStyleDeclaration> | NestedCSS
-} & {
     [key in Selector]?: Partial<CSSStyleDeclaration> | NestedCSS // カスタムセレクタや未知のプロパティも許容
+} & {
+    [key in keyof CSSStyleDeclaration]?: Partial<CSSStyleDeclaration> | NestedCSS
 }
 
 class Ielement extends HTMLDivElement {
