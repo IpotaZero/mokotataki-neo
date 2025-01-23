@@ -1,53 +1,111 @@
+type classSelector = `.${string}`
+type idSelector = `#${string}`
+type tagSelector = keyof HTMLElementTagNameMap
+type childSelector = ` ${tagSelector | classSelector | idSelector}`
+
+type pseudoClassSelector =
+    | ":hover"
+    | ":active"
+    | ":focus"
+    | ":visited"
+    | ":first-child"
+    | ":last-child"
+    | ":only-child"
+    | `:nth-child(n)`
+    | `:nth-last-child(n)`
+    | ":checked"
+    | ":disabled"
+    | ":enabled"
+    | ":empty"
+    | ":target"
+    | ":root"
+    | ":focus-within"
+    | ":focus-visible"
+
+type pseudoElementsSelector =
+    | "::before"
+    | "::after"
+    | "::first-line"
+    | "::first-letter"
+    | "::placeholder"
+    | "::selection"
+    | "::backdrop"
+    | "::marker"
+    | "::spelling-error"
+    | "::grammar-error"
+
+type Selector =
+    | classSelector
+    | idSelector
+    | childSelector
+    | pseudoClassSelector
+    | pseudoElementsSelector
+    | `:not(${pseudoClassSelector | classSelector | idSelector | tagSelector})`
+
+type NestedCSS = {
+    [key in keyof CSSStyleDeclaration]?: Partial<CSSStyleDeclaration> | NestedCSS
+} & {
+    [key in Selector]?: Partial<CSSStyleDeclaration> | NestedCSS // カスタムセレクタや未知のプロパティも許容
+}
+
 class Ielement extends HTMLDivElement {
-    static idCount = 0
+    static #idCount = 0
+
+    // キャメルケースをケバブケースに変換する関数
+    #toKebabCase(str: string) {
+        let s = str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
+
+        if (s.startsWith("webkit")) s = "-" + s
+
+        return s
+    }
 
     #styleElement = document.createElement("style")
 
     constructor(
         container: HTMLElement,
-        {
-            css = {},
-            hoverCss = {},
-        }: {
-            css?: Partial<CSSStyleDeclaration>
-            hoverCss?: Partial<CSSStyleDeclaration>
+        options: {
+            css?: NestedCSS
         } = {},
     ) {
         super()
-        this.setCSS(css, hoverCss)
+        this.#setCSS(options.css)
 
         container.appendChild(this)
     }
 
-    setCSS(css: any, hoverCss: any) {
+    #setCSS(css?: NestedCSS) {
         // ユニークなクラス名を生成
-        const uniqueClass = `i-element-${Ielement.idCount++}`
+        const uniqueClass = `i-element-${Ielement.#idCount++}`
         this.classList.add(uniqueClass)
 
-        // キャメルケースをケバブケースに変換する関数
-        const toKebabCase = (str: string) => {
-            let s = str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
-
-            if (s.startsWith("webkit")) s = "-" + s
-
-            return s
+        if (css) {
+            let style = `.${uniqueClass} {\n`
+            style += this.#createStyleString(1, css)
+            this.#styleElement.textContent = style + "}"
+            document.head.appendChild(this.#styleElement)
         }
+    }
 
-        this.#styleElement.textContent = `
-            .${uniqueClass} {
-                ${Object.entries(css)
-                    .map(([key, value]) => `${toKebabCase(key)}: ${value};`)
-                    .join("\n")}
-            }
-            
-            .${uniqueClass}:hover {
-                ${Object.entries(hoverCss)
-                    .map(([key, value]) => `${toKebabCase(key)}: ${value};`)
-                    .join("\n")}
-            }
-        `
+    #createStyleString(depth: number, css: NestedCSS) {
+        let style = ""
 
-        document.head.appendChild(this.#styleElement)
+        Object.entries(css).forEach(([property, value], i, list) => {
+            if (typeof value == "string") {
+                style += " ".repeat(4 * depth) + `${this.#toKebabCase(property)}: ${value};`
+                if (i != list.length - 1) style += "\n"
+                return
+            }
+
+            style +=
+                "\n" +
+                " ".repeat(4 * depth) +
+                `&${property} {\n${this.#createStyleString(depth + 1, value as NestedCSS)}` +
+                "\t".repeat(depth) +
+                `}`
+        })
+
+        return style + "\n"
     }
 
     remove(): void {
@@ -68,17 +126,12 @@ class Itext extends Ielement {
     constructor(
         container: HTMLElement,
         text: string,
-        {
-            css = {},
-            hoverCss = {},
-            speed = 24,
-        }: {
-            css?: Partial<CSSStyleDeclaration>
-            hoverCss?: Partial<CSSStyleDeclaration>
+        options: {
+            css?: NestedCSS
             speed?: number
         } = {},
     ) {
-        super(container, { css, hoverCss })
+        super(container, options)
 
         // 元のHTMLを保存
         this.#originalHTML = text.replace(/\s{2,}/g, " ").replace(/\n/g, "")
@@ -92,7 +145,7 @@ class Itext extends Ielement {
             // アニメーション開始
             this.#interval = setInterval(() => {
                 this.#updateText(resolve)
-            }, 1000 / speed)
+            }, 1000 / (options.speed ?? 24))
         })
     }
 
@@ -181,26 +234,19 @@ class Icommand extends Ielement {
     #handlerDict = new Idict<() => void>({})
     #optionDict = new Idict<string[]>({})
     #branch = ""
-    #option
+    #options
 
     constructor(
         container: HTMLElement,
         dict: Idict<string[]>,
-        option: {
-            text?: {
-                css?: Partial<CSSStyleDeclaration>
-                hoverCss?: Partial<CSSStyleDeclaration>
-            }
-            command?: {
-                css?: Partial<CSSStyleDeclaration>
-                hoverCss?: Partial<CSSStyleDeclaration>
-            }
+        options: {
+            css?: NestedCSS
             speed?: number
         } = {},
     ) {
-        super(container, { css: option.command?.css, hoverCss: option.command?.hoverCss })
+        super(container, options)
 
-        this.#option = option
+        this.#options = options
         this.#optionDict = dict
 
         this.#setOptions()
@@ -216,7 +262,8 @@ class Icommand extends Ielement {
         if (!optionList) return
 
         for (const [i, option] of optionList.entries()) {
-            const itext = new Itext(this, option, this.#option.text)
+            const itext = new Itext(this, option)
+            itext.classList.add("i-command-option")
             itext.onclick = () => {
                 this.#onclickOption(i)
             }

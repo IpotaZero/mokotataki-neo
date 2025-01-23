@@ -14,6 +14,7 @@ const textCSS = {
     zIndex: "1000",
 };
 const oh = new Audio("ビシッとツッコミ3.mp3");
+oh.volume = 0.4;
 const container = document.getElementById("container");
 if (!container)
     throw new Error("no container");

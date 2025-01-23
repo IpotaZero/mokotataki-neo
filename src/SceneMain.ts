@@ -85,6 +85,7 @@ const SceneMain = class {
 
     #clearContainer() {
         ;[...container.children].forEach((c) => c.remove())
+        ;[...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove())
     }
 
     #setupScoreText() {
@@ -132,6 +133,7 @@ const SceneMain = class {
 
     async #displayResult() {
         const drum = new Audio("ドラムロール.mp3")
+        drum.volume = 0.5
         const cymbal = this.#score < 10 ? new Audio("間抜け7.mp3") : new Audio("ロールの締め.mp3")
 
         const result = new Itext(container, `結果...`, {
@@ -153,7 +155,7 @@ const SceneMain = class {
         const shadowColor =
             ["", "lightGreen", "red", "rgba(240, 198, 16, 1)", "blue"][Math.floor(this.#score / 10)] ?? "Gold"
 
-        const css =
+        const css: any =
             this.#score >= 40
                 ? {
                       background:
@@ -191,10 +193,11 @@ const SceneMain = class {
                 pointerEvents: "",
 
                 backgroundColor: "rgba(0, 0, 0, 0.3)",
-            },
-            hoverCss: {
-                border: "azure 0.3vh solid",
-                cursor: "pointer",
+
+                ":hover": {
+                    border: "azure 0.3vh solid",
+                    cursor: "pointer",
+                },
             },
         })
 

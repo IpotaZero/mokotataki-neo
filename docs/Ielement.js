@@ -10,51 +10,59 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Ielement_styleElement, _Itext_instances, _Itext_interval, _Itext_tempDiv, _Itext_originalHTML, _Itext_processTextNodes, _Itext_updateText, _Icommand_instances, _Icommand_handlerDict, _Icommand_optionDict, _Icommand_branch, _Icommand_option, _Icommand_setOptions, _Icommand_onclickOption;
+var _Ielement_instances, _a, _Ielement_idCount, _Ielement_toKebabCase, _Ielement_styleElement, _Ielement_setCSS, _Ielement_createStyleString, _Itext_instances, _Itext_interval, _Itext_tempDiv, _Itext_originalHTML, _Itext_processTextNodes, _Itext_updateText, _Icommand_instances, _Icommand_handlerDict, _Icommand_optionDict, _Icommand_branch, _Icommand_options, _Icommand_setOptions, _Icommand_onclickOption;
 class Ielement extends HTMLDivElement {
-    constructor(container, { css = {}, hoverCss = {}, } = {}) {
+    constructor(container, options = {}) {
         super();
+        _Ielement_instances.add(this);
         _Ielement_styleElement.set(this, document.createElement("style"));
-        this.setCSS(css, hoverCss);
+        __classPrivateFieldGet(this, _Ielement_instances, "m", _Ielement_setCSS).call(this, options.css);
         container.appendChild(this);
-    }
-    setCSS(css, hoverCss) {
-        // ユニークなクラス名を生成
-        const uniqueClass = `i-element-${Ielement.idCount++}`;
-        this.classList.add(uniqueClass);
-        // キャメルケースをケバブケースに変換する関数
-        const toKebabCase = (str) => {
-            let s = str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
-            if (s.startsWith("webkit"))
-                s = "-" + s;
-            return s;
-        };
-        __classPrivateFieldGet(this, _Ielement_styleElement, "f").textContent = `
-            .${uniqueClass} {
-                ${Object.entries(css)
-            .map(([key, value]) => `${toKebabCase(key)}: ${value};`)
-            .join("\n")}
-            }
-            
-            .${uniqueClass}:hover {
-                ${Object.entries(hoverCss)
-            .map(([key, value]) => `${toKebabCase(key)}: ${value};`)
-            .join("\n")}
-            }
-        `;
-        document.head.appendChild(__classPrivateFieldGet(this, _Ielement_styleElement, "f"));
     }
     remove() {
         super.remove();
         __classPrivateFieldGet(this, _Ielement_styleElement, "f").remove();
     }
 }
-_Ielement_styleElement = new WeakMap();
-Ielement.idCount = 0;
+_a = Ielement, _Ielement_styleElement = new WeakMap(), _Ielement_instances = new WeakSet(), _Ielement_toKebabCase = function _Ielement_toKebabCase(str) {
+    let s = str.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+    if (s.startsWith("webkit"))
+        s = "-" + s;
+    return s;
+}, _Ielement_setCSS = function _Ielement_setCSS(css) {
+    var _b, _c, _d;
+    // ユニークなクラス名を生成
+    const uniqueClass = `i-element-${__classPrivateFieldSet(_b = _a, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _Ielement_idCount), _c = _d++, _d), "f", _Ielement_idCount), _c}`;
+    this.classList.add(uniqueClass);
+    if (css) {
+        let style = `.${uniqueClass} {\n`;
+        style += __classPrivateFieldGet(this, _Ielement_instances, "m", _Ielement_createStyleString).call(this, 1, css);
+        __classPrivateFieldGet(this, _Ielement_styleElement, "f").textContent = style + "}";
+        document.head.appendChild(__classPrivateFieldGet(this, _Ielement_styleElement, "f"));
+    }
+}, _Ielement_createStyleString = function _Ielement_createStyleString(depth, css) {
+    let style = "";
+    Object.entries(css).forEach(([property, value], i, list) => {
+        if (typeof value == "string") {
+            style += " ".repeat(4 * depth) + `${__classPrivateFieldGet(this, _Ielement_instances, "m", _Ielement_toKebabCase).call(this, property)}: ${value};`;
+            if (i != list.length - 1)
+                style += "\n";
+            return;
+        }
+        style +=
+            "\n" +
+                " ".repeat(4 * depth) +
+                `&${property} {\n${__classPrivateFieldGet(this, _Ielement_instances, "m", _Ielement_createStyleString).call(this, depth + 1, value)}` +
+                "\t".repeat(depth) +
+                `}`;
+    });
+    return style + "\n";
+};
+_Ielement_idCount = { value: 0 };
 customElements.define("i-element", Ielement, { extends: "div" });
 class Itext extends Ielement {
-    constructor(container, text, { css = {}, hoverCss = {}, speed = 24, } = {}) {
-        super(container, { css, hoverCss });
+    constructor(container, text, options = {}) {
+        super(container, options);
         _Itext_instances.add(this);
         _Itext_interval.set(this, 0);
         _Itext_tempDiv.set(this, document.createElement("div"));
@@ -70,7 +78,7 @@ class Itext extends Ielement {
             // アニメーション開始
             __classPrivateFieldSet(this, _Itext_interval, setInterval(() => {
                 __classPrivateFieldGet(this, _Itext_instances, "m", _Itext_updateText).call(this, resolve);
-            }, 1000 / speed), "f");
+            }, 1000 / (options.speed ?? 24)), "f");
         });
     }
     // アニメーションを即座に完了
@@ -136,14 +144,14 @@ _Itext_interval = new WeakMap(), _Itext_tempDiv = new WeakMap(), _Itext_original
 };
 customElements.define("i-text", Itext, { extends: "div" });
 class Icommand extends Ielement {
-    constructor(container, dict, option = {}) {
-        super(container, { css: option.command?.css, hoverCss: option.command?.hoverCss });
+    constructor(container, dict, options = {}) {
+        super(container, options);
         _Icommand_instances.add(this);
         _Icommand_handlerDict.set(this, new Idict({}));
         _Icommand_optionDict.set(this, new Idict({}));
         _Icommand_branch.set(this, "");
-        _Icommand_option.set(this, void 0);
-        __classPrivateFieldSet(this, _Icommand_option, option, "f");
+        _Icommand_options.set(this, void 0);
+        __classPrivateFieldSet(this, _Icommand_options, options, "f");
         __classPrivateFieldSet(this, _Icommand_optionDict, dict, "f");
         __classPrivateFieldGet(this, _Icommand_instances, "m", _Icommand_setOptions).call(this);
     }
@@ -160,7 +168,7 @@ class Icommand extends Ielement {
         return this;
     }
 }
-_Icommand_handlerDict = new WeakMap(), _Icommand_optionDict = new WeakMap(), _Icommand_branch = new WeakMap(), _Icommand_option = new WeakMap(), _Icommand_instances = new WeakSet(), _Icommand_setOptions = async function _Icommand_setOptions() {
+_Icommand_handlerDict = new WeakMap(), _Icommand_optionDict = new WeakMap(), _Icommand_branch = new WeakMap(), _Icommand_options = new WeakMap(), _Icommand_instances = new WeakSet(), _Icommand_setOptions = async function _Icommand_setOptions() {
     const optionList = __classPrivateFieldGet(this, _Icommand_optionDict, "f").get(__classPrivateFieldGet(this, _Icommand_branch, "f"));
     [...this.children].forEach((n) => {
         n.remove();
@@ -168,7 +176,8 @@ _Icommand_handlerDict = new WeakMap(), _Icommand_optionDict = new WeakMap(), _Ic
     if (!optionList)
         return;
     for (const [i, option] of optionList.entries()) {
-        const itext = new Itext(this, option, __classPrivateFieldGet(this, _Icommand_option, "f").text);
+        const itext = new Itext(this, option);
+        itext.classList.add("i-command-option");
         itext.onclick = () => {
             __classPrivateFieldGet(this, _Icommand_instances, "m", _Icommand_onclickOption).call(this, i);
         };

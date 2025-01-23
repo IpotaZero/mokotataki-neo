@@ -85,6 +85,7 @@ const SceneMain = (_a = class {
     _clearContainer = function _clearContainer() {
         ;
         [...container.children].forEach((c) => c.remove());
+        [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
     },
     _setupScoreText = function _setupScoreText() {
         __classPrivateFieldSet(this, _scoreText, new Itext(container, "", {
@@ -119,6 +120,7 @@ const SceneMain = (_a = class {
     },
     _displayResult = async function _displayResult() {
         const drum = new Audio("ドラムロール.mp3");
+        drum.volume = 0.5;
         const cymbal = __classPrivateFieldGet(this, _score, "f") < 10 ? new Audio("間抜け7.mp3") : new Audio("ロールの締め.mp3");
         const result = new Itext(container, `結果...`, {
             css: {
@@ -161,10 +163,10 @@ const SceneMain = (_a = class {
                 ...textCSS,
                 pointerEvents: "",
                 backgroundColor: "rgba(0, 0, 0, 0.3)",
-            },
-            hoverCss: {
-                border: "azure 0.3vh solid",
-                cursor: "pointer",
+                ":hover": {
+                    border: "azure 0.3vh solid",
+                    cursor: "pointer",
+                },
             },
         });
         back.onclick = () => {

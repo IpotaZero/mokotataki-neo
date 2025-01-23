@@ -3,15 +3,16 @@ const SceneTitle = class {
     constructor() {
         ;
         [...container.children].forEach((c) => c.remove());
+        [...document.head.children].filter((c) => c.tagName == "STYLE").forEach((c) => c.remove());
         const title = new Itext(container, "もこたたき::NEO!", {
             css: {
                 top: "15%",
                 width: "100%",
+                flexDirection: "row",
                 color: "azure",
                 fontSize: "12vh",
                 zIndex: "1000",
                 textShadow: "0px 0px 10px rgba(240, 198, 16, 1)",
-                flexDirection: "row",
             },
         });
         title.ready.then(() => {
@@ -30,8 +31,15 @@ const SceneTitle = class {
             document.head.appendChild(style);
         }
         const icommand = new Icommand(container, new Idict({ "": ["はじめる", "せつめい", "くれじっと"] }), {
-            text: {
-                css: {
+            css: {
+                top: "65%",
+                width: "30%",
+                height: "30%",
+                borderRadius: "5px",
+                display: "block",
+                textAlign: "center",
+                // border: "azure 2px solid",
+                " .i-command-option": {
                     ...textCSS,
                     position: "relative",
                     width: "100%",
@@ -40,20 +48,9 @@ const SceneTitle = class {
                     cursor: "pointer",
                     backgroundColor: "rgba(0, 0, 0, 0.3)",
                     borderRadius: "5px",
-                },
-                hoverCss: {
-                    border: "azure 0.3vh solid",
-                },
-            },
-            command: {
-                css: {
-                    top: "65%",
-                    width: "30%",
-                    height: "30%",
-                    borderRadius: "5px",
-                    display: "block",
-                    textAlign: "center",
-                    // border: "azure 2px solid",
+                    ":hover": {
+                        border: "azure 0.3vh solid",
+                    },
                 },
             },
         });
@@ -92,9 +89,9 @@ const SceneTitle = class {
                     backgroundColor: "azure",
                     border: "azure 0.3vh solid",
                     borderRadius: "10%",
-                },
-                hoverCss: {
-                    cursor: "pointer",
+                    ":hover": {
+                        cursor: "pointer",
+                    },
                 },
             });
             const i = new Image();
@@ -111,10 +108,10 @@ const SceneTitle = class {
                     borderRadius: "5%",
                     width: "20%",
                     height: "8%",
-                },
-                hoverCss: {
-                    border: "azure 0.3vh solid",
-                    cursor: "pointer",
+                    ":hover": {
+                        border: "azure 0.3vh solid",
+                        cursor: "pointer",
+                    },
                 },
             });
             back.onclick = () => {
@@ -149,10 +146,10 @@ const SceneTitle = class {
                     borderRadius: "5%",
                     width: "20%",
                     height: "8%",
-                },
-                hoverCss: {
-                    border: "azure 0.3vh solid",
-                    cursor: "pointer",
+                    ":hover": {
+                        border: "azure 0.3vh solid",
+                        cursor: "pointer",
+                    },
                 },
             });
             back.onclick = () => {

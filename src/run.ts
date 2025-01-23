@@ -11,7 +11,7 @@ document.addEventListener("contextmenu", (e) => {
     e.preventDefault()
 })
 
-const textCSS = {
+const textCSS: NestedCSS = {
     color: "azure",
     fontSize: "5vh",
     pointerEvents: "none",
@@ -19,6 +19,7 @@ const textCSS = {
 }
 
 const oh = new Audio("ビシッとツッコミ3.mp3")
+oh.volume = 0.4
 
 const container = document.getElementById("container") as HTMLDivElement
 if (!container) throw new Error("no container")
