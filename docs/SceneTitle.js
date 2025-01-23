@@ -105,6 +105,10 @@ const SceneTitle = (_a = class {
                     width: "15%",
                     aspectRatio: "1",
                     backgroundColor: "azure",
+                    backgroundImage: "url(mokota.png)",
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
                     border: "azure 0.3vh solid",
                     borderRadius: "10%",
                     ":hover": {
@@ -112,9 +116,6 @@ const SceneTitle = (_a = class {
                     },
                 },
             });
-            const i = new Image();
-            i.src = "mokota.png";
-            img.appendChild(i);
             img.onclick = () => {
                 oh.play();
             };

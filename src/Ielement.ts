@@ -48,7 +48,7 @@ type NestedCSS = {
     [key in keyof CSSStyleDeclaration]?: Partial<CSSStyleDeclaration> | NestedCSS
 }
 
-class Ielement extends HTMLDivElement {
+class Ielement extends HTMLElement {
     static #idCount = 0
 
     // キャメルケースをケバブケースに変換する関数
@@ -114,7 +114,7 @@ class Ielement extends HTMLDivElement {
     }
 }
 
-customElements.define("i-element", Ielement, { extends: "div" })
+customElements.define("i-element", Ielement)
 
 class Itext extends Ielement {
     #interval = 0
@@ -239,7 +239,7 @@ class Itext extends Ielement {
     }
 }
 
-customElements.define("i-text", Itext, { extends: "div" })
+customElements.define("i-text", Itext)
 
 class Icommand extends Ielement {
     #handlerDict = new Idict<() => void>({})
@@ -296,6 +296,8 @@ class Icommand extends Ielement {
             this.#branch = this.#branch.substring(0, -1)
         }
 
+        this.#handlerDict.get(this.#branch)?.()
+
         this.#setOptions()
     }
 
@@ -306,7 +308,7 @@ class Icommand extends Ielement {
     }
 }
 
-customElements.define("i-command", Icommand, { extends: "div" })
+customElements.define("i-command", Icommand)
 
 const sleep = (ms: number): Promise<void> =>
     new Promise((resolve) => {

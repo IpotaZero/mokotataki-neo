@@ -11,7 +11,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Ielement_instances, _a, _Ielement_idCount, _Ielement_toKebabCase, _Ielement_styleElement, _Ielement_setCSS, _Ielement_createStyleString, _Itext_instances, _Itext_interval, _Itext_tempDiv, _Itext_originalHTML, _Itext_setupText, _Itext_processTextNodes, _Itext_updateText, _Icommand_instances, _Icommand_handlerDict, _Icommand_optionDict, _Icommand_branch, _Icommand_options, _Icommand_setOptions, _Icommand_onclickOption;
-class Ielement extends HTMLDivElement {
+class Ielement extends HTMLElement {
     constructor(container, options = {}) {
         super();
         _Ielement_instances.add(this);
@@ -59,7 +59,7 @@ _a = Ielement, _Ielement_styleElement = new WeakMap(), _Ielement_instances = new
     return style + "\n";
 };
 _Ielement_idCount = { value: 0 };
-customElements.define("i-element", Ielement, { extends: "div" });
+customElements.define("i-element", Ielement);
 class Itext extends Ielement {
     constructor(container, text, options = {}) {
         super(container, options);
@@ -149,7 +149,7 @@ _Itext_interval = new WeakMap(), _Itext_tempDiv = new WeakMap(), _Itext_original
         }
     }
 };
-customElements.define("i-text", Itext, { extends: "div" });
+customElements.define("i-text", Itext);
 class Icommand extends Ielement {
     constructor(container, dict, options = {}) {
         super(container, options);
@@ -168,6 +168,7 @@ class Icommand extends Ielement {
                 break;
             __classPrivateFieldSet(this, _Icommand_branch, __classPrivateFieldGet(this, _Icommand_branch, "f").substring(0, -1), "f");
         }
+        __classPrivateFieldGet(this, _Icommand_handlerDict, "f").get(__classPrivateFieldGet(this, _Icommand_branch, "f"))?.();
         __classPrivateFieldGet(this, _Icommand_instances, "m", _Icommand_setOptions).call(this);
     }
     on(regex, handler) {
@@ -195,7 +196,7 @@ _Icommand_handlerDict = new WeakMap(), _Icommand_optionDict = new WeakMap(), _Ic
     __classPrivateFieldGet(this, _Icommand_instances, "m", _Icommand_setOptions).call(this);
     __classPrivateFieldGet(this, _Icommand_handlerDict, "f").get(__classPrivateFieldGet(this, _Icommand_branch, "f"))?.();
 };
-customElements.define("i-command", Icommand, { extends: "div" });
+customElements.define("i-command", Icommand);
 const sleep = (ms) => new Promise((resolve) => {
     setTimeout(() => {
         resolve();

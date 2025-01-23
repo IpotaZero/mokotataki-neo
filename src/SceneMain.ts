@@ -6,14 +6,11 @@ const SceneMain = class {
 
     #block: Ielement
 
-    #img = new Image()
-
     #focus = new Image()
 
     #focusSound = new Audio("きらーん1.mp3")
 
     constructor() {
-        this.#img.src = "mokota.png"
         this.#focus.src = "im11277821.png"
         this.#focus.classList.add("focus")
 
@@ -221,10 +218,13 @@ const SceneMain = class {
                 aspectRatio: "1",
 
                 cursor: "pointer",
+
+                backgroundImage: "url(mokota.png)",
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
             },
         })
-
-        this.#block.appendChild(this.#img)
 
         this.#block.onclick = () => {
             oh.currentTime = 0
