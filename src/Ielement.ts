@@ -41,6 +41,7 @@ type Selector =
     | pseudoClassSelector
     | pseudoElementsSelector
     | `:not(${pseudoClassSelector | classSelector | idSelector | tagSelector})`
+    | `${childSelector}${pseudoClassSelector}`
 
 type NestedCSS = {
     [key in Selector]?: Partial<CSSStyleDeclaration> | NestedCSS // カスタムセレクタや未知のプロパティも許容

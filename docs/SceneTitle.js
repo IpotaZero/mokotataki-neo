@@ -153,6 +153,9 @@ const SceneTitle = (_a = class {
                     width: "100%",
                     paddingLeft: "10%",
                     pointerEvents: "",
+                    " a:hover": {
+                        color: "rgb(79, 84, 84)",
+                    },
                 },
             });
             const back = new Itext(container, "戻る", {

@@ -179,6 +179,10 @@ const SceneTitle = class {
                     paddingLeft: "10%",
 
                     pointerEvents: "",
+
+                    " a:hover": {
+                        color: "rgb(79, 84, 84)",
+                    },
                 },
             })
 
