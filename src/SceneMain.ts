@@ -138,15 +138,9 @@ const SceneMain = class {
 
         drum.currentTime = 2
 
-        const promise: Promise<void> = new Promise((resolve) => {
-            drum.onended = () => {
-                resolve()
-            }
-        })
-
         await drum.play()
 
-        await promise
+        await sleep(2281)
 
         const shadowColor =
             ["", "lightGreen", "red", "rgba(240, 198, 16, 1)", "blue"][Math.floor(this.#score / 10)] ?? "Gold"
