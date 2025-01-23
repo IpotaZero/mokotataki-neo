@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Ielement_instances, _a, _Ielement_idCount, _Ielement_toKebabCase, _Ielement_styleElement, _Ielement_setCSS, _Ielement_createStyleString, _Itext_instances, _Itext_interval, _Itext_tempDiv, _Itext_originalHTML, _Itext_processTextNodes, _Itext_updateText, _Icommand_instances, _Icommand_handlerDict, _Icommand_optionDict, _Icommand_branch, _Icommand_options, _Icommand_setOptions, _Icommand_onclickOption;
+var _Ielement_instances, _a, _Ielement_idCount, _Ielement_toKebabCase, _Ielement_styleElement, _Ielement_setCSS, _Ielement_createStyleString, _Itext_instances, _Itext_interval, _Itext_tempDiv, _Itext_originalHTML, _Itext_setupText, _Itext_processTextNodes, _Itext_updateText, _Icommand_instances, _Icommand_handlerDict, _Icommand_optionDict, _Icommand_branch, _Icommand_options, _Icommand_setOptions, _Icommand_onclickOption;
 class Ielement extends HTMLDivElement {
     constructor(container, options = {}) {
         super();
@@ -68,18 +68,7 @@ class Itext extends Ielement {
         _Itext_tempDiv.set(this, document.createElement("div"));
         _Itext_originalHTML.set(this, void 0);
         this.isEnd = false;
-        // 元のHTMLを保存
-        __classPrivateFieldSet(this, _Itext_originalHTML, text.replace(/\s{2,}/g, " ").replace(/\n/g, ""), "f");
-        __classPrivateFieldGet(this, _Itext_tempDiv, "f").innerHTML = __classPrivateFieldGet(this, _Itext_originalHTML, "f");
-        // 表示用の要素を初期化
-        this.innerHTML = __classPrivateFieldGet(this, _Itext_originalHTML, "f");
-        __classPrivateFieldGet(this, _Itext_instances, "m", _Itext_processTextNodes).call(this, this);
-        this.ready = new Promise((resolve) => {
-            // アニメーション開始
-            __classPrivateFieldSet(this, _Itext_interval, setInterval(() => {
-                __classPrivateFieldGet(this, _Itext_instances, "m", _Itext_updateText).call(this, resolve);
-            }, 1000 / (options.speed ?? 24)), "f");
-        });
+        __classPrivateFieldGet(this, _Itext_instances, "m", _Itext_setupText).call(this, text, options.speed ?? 24);
     }
     // アニメーションを即座に完了
     finish() {
@@ -89,7 +78,25 @@ class Itext extends Ielement {
         this.ready = Promise.resolve();
     }
 }
-_Itext_interval = new WeakMap(), _Itext_tempDiv = new WeakMap(), _Itext_originalHTML = new WeakMap(), _Itext_instances = new WeakSet(), _Itext_processTextNodes = function _Itext_processTextNodes(element) {
+_Itext_interval = new WeakMap(), _Itext_tempDiv = new WeakMap(), _Itext_originalHTML = new WeakMap(), _Itext_instances = new WeakSet(), _Itext_setupText = async function _Itext_setupText(text, speed) {
+    if (text.endsWith(".html")) {
+        this.innerHTML = "読み込み中...";
+        const res = await fetch(text);
+        text = await res.text();
+    }
+    // 元のHTMLを保存
+    __classPrivateFieldSet(this, _Itext_originalHTML, text.replace(/\s{2,}/g, " ").replace(/\n/g, ""), "f");
+    __classPrivateFieldGet(this, _Itext_tempDiv, "f").innerHTML = __classPrivateFieldGet(this, _Itext_originalHTML, "f");
+    // 表示用の要素を初期化
+    this.innerHTML = __classPrivateFieldGet(this, _Itext_originalHTML, "f");
+    __classPrivateFieldGet(this, _Itext_instances, "m", _Itext_processTextNodes).call(this, this);
+    this.ready = new Promise((resolve) => {
+        // アニメーション開始
+        __classPrivateFieldSet(this, _Itext_interval, setInterval(() => {
+            __classPrivateFieldGet(this, _Itext_instances, "m", _Itext_updateText).call(this, resolve);
+        }, 1000 / speed), "f");
+    });
+}, _Itext_processTextNodes = function _Itext_processTextNodes(element) {
     const childNodes = Array.from(element.childNodes);
     childNodes.forEach((node) => {
         if (node.nodeType === Node.TEXT_NODE) {

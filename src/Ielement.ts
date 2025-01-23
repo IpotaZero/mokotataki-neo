@@ -133,6 +133,17 @@ class Itext extends Ielement {
     ) {
         super(container, options)
 
+        this.#setupText(text, options.speed ?? 24)
+    }
+
+    async #setupText(text: string, speed: number) {
+        if (text.endsWith(".html")) {
+            this.innerHTML = "読み込み中..."
+
+            const res = await fetch(text)
+            text = await res.text()
+        }
+
         // 元のHTMLを保存
         this.#originalHTML = text.replace(/\s{2,}/g, " ").replace(/\n/g, "")
         this.#tempDiv.innerHTML = this.#originalHTML
@@ -145,7 +156,7 @@ class Itext extends Ielement {
             // アニメーション開始
             this.#interval = setInterval(() => {
                 this.#updateText(resolve)
-            }, 1000 / (options.speed ?? 24))
+            }, 1000 / speed)
         })
     }
 

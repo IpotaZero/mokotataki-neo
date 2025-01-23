@@ -141,23 +141,7 @@ const SceneTitle = (_a = class {
             };
         });
         icommand.on("2", async () => {
-            const loading = new Itext(container, "読み込み中...", {
-                speed: 200,
-                css: {
-                    ...textCSS,
-                    top: "30%",
-                    fontSize: "4vh",
-                    display: "inline",
-                    textAlign: "left",
-                    width: "100%",
-                    paddingLeft: "10%",
-                    pointerEvents: "",
-                },
-            });
-            const res = await fetch("credit.html");
-            const html = await res.text();
-            loading.remove();
-            const itext = new Itext(container, html, {
+            const itext = new Itext(container, "credit.html", {
                 speed: 200,
                 css: {
                     ...textCSS,
