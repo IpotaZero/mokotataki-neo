@@ -123,7 +123,7 @@ const SceneMain = (_a = class {
             },
         });
         drum.currentTime = 2;
-        await drum.play();
+        drum.play();
         await sleep(2281);
         const shadowColor = ["", "lightGreen", "red", "rgba(240, 198, 16, 1)", "blue"][Math.floor(__classPrivateFieldGet(this, _score, "f") / 10)] ?? "Gold";
         const css = __classPrivateFieldGet(this, _score, "f") >= 40

@@ -138,7 +138,7 @@ const SceneMain = class {
 
         drum.currentTime = 2
 
-        await drum.play()
+        drum.play()
 
         await sleep(2281)
 
