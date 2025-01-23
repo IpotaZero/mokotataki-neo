@@ -6,14 +6,9 @@ const SceneMain = class {
 
     #block: Ielement
 
-    #focus = new Image()
-
     #focusSound = new Audio("きらーん1.mp3")
 
     constructor() {
-        this.#focus.src = "im11277821.png"
-        this.#focus.classList.add("focus")
-
         this.#focusSound.volume = 0.3
 
         this.#clearContainer()
@@ -141,9 +136,9 @@ const SceneMain = class {
             },
         })
 
-        drum.currentTime = 2.5
+        drum.currentTime = 2
 
-        drum.play()
+        await drum.play()
 
         await new Promise((resolve) => {
             drum.onended = resolve

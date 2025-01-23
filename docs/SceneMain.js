@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _instances, _scoreText, _score, _frame, _block, _focus, _focusSound, _startGame, _countdown, _clearContainer, _setupScoreText, _setupTimeLoop, _displayResult, _createBlock, _shakeContainer, _updateScore, _a;
+var _instances, _scoreText, _score, _frame, _block, _focusSound, _startGame, _countdown, _clearContainer, _setupScoreText, _setupTimeLoop, _displayResult, _createBlock, _shakeContainer, _updateScore, _a;
 const SceneMain = (_a = class {
         constructor() {
             _instances.add(this);
@@ -18,10 +18,7 @@ const SceneMain = (_a = class {
             _score.set(this, 0);
             _frame.set(this, void 0);
             _block.set(this, void 0);
-            _focus.set(this, new Image());
             _focusSound.set(this, new Audio("きらーん1.mp3"));
-            __classPrivateFieldGet(this, _focus, "f").src = "im11277821.png";
-            __classPrivateFieldGet(this, _focus, "f").classList.add("focus");
             __classPrivateFieldGet(this, _focusSound, "f").volume = 0.3;
             __classPrivateFieldGet(this, _instances, "m", _clearContainer).call(this);
             __classPrivateFieldSet(this, _frame, new Ielement(container, {
@@ -38,7 +35,6 @@ const SceneMain = (_a = class {
     _score = new WeakMap(),
     _frame = new WeakMap(),
     _block = new WeakMap(),
-    _focus = new WeakMap(),
     _focusSound = new WeakMap(),
     _instances = new WeakSet(),
     _startGame = async function _startGame() {
@@ -126,8 +122,8 @@ const SceneMain = (_a = class {
                 top: "30%",
             },
         });
-        drum.currentTime = 2.5;
-        drum.play();
+        drum.currentTime = 2;
+        await drum.play();
         await new Promise((resolve) => {
             drum.onended = resolve;
         });
