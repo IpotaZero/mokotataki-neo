@@ -23,8 +23,6 @@ body {
     background-color: rgba(127, 255, 255, 0.4);
     background-blend-mode: lighten;
 
-    touch-action: none;
-
     -webkit-user-drag: none;
 
     user-select: none;

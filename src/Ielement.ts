@@ -3,36 +3,9 @@ type idSelector = `#${string}`
 type tagSelector = keyof HTMLElementTagNameMap
 type childSelector = ` ${tagSelector | classSelector | idSelector}`
 
-type pseudoClassSelector =
-    | ":hover"
-    | ":active"
-    | ":focus"
-    | ":visited"
-    | ":first-child"
-    | ":last-child"
-    | ":only-child"
-    | `:nth-child(n)`
-    | `:nth-last-child(n)`
-    | ":checked"
-    | ":disabled"
-    | ":enabled"
-    | ":empty"
-    | ":target"
-    | ":root"
-    | ":focus-within"
-    | ":focus-visible"
+type pseudoClassSelector = ":hover" | ":active"
 
-type pseudoElementsSelector =
-    | "::before"
-    | "::after"
-    | "::first-line"
-    | "::first-letter"
-    | "::placeholder"
-    | "::selection"
-    | "::backdrop"
-    | "::marker"
-    | "::spelling-error"
-    | "::grammar-error"
+type pseudoElementsSelector = "::before" | "::after"
 
 type Selector =
     | classSelector
@@ -40,7 +13,7 @@ type Selector =
     | childSelector
     | pseudoClassSelector
     | pseudoElementsSelector
-    | `:not(${pseudoClassSelector | classSelector | idSelector | tagSelector})`
+    // | `:not(${pseudoClassSelector | classSelector | idSelector | tagSelector})`
     | `${childSelector}${pseudoClassSelector}`
 
 type NestedCSS = {

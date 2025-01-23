@@ -138,8 +138,10 @@ const SceneMain = class {
 
         drum.currentTime = 2
 
-        const promise = new Promise((resolve) => {
-            drum.onended = resolve
+        const promise: Promise<void> = new Promise((resolve) => {
+            drum.onended = () => {
+                resolve()
+            }
         })
 
         await drum.play()

@@ -124,7 +124,9 @@ const SceneMain = (_a = class {
         });
         drum.currentTime = 2;
         const promise = new Promise((resolve) => {
-            drum.onended = resolve;
+            drum.onended = () => {
+                resolve();
+            };
         });
         await drum.play();
         await promise;
