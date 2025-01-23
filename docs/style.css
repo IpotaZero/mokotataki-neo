@@ -3,8 +3,6 @@
     padding: 0;
 
     box-sizing: border-box;
-
-    -webkit-user-drag: none;
 }
 
 html {
@@ -24,6 +22,16 @@ body {
     background-size: 50%;
     background-color: rgba(127, 255, 255, 0.4);
     background-blend-mode: lighten;
+
+    touch-action: none;
+
+    -webkit-user-drag: none;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    cursor: default;
 }
 
 #container {
@@ -52,6 +60,7 @@ body {
     overflow: hidden;
 }
 
+i-element,
 i-text,
 i-command {
     position: absolute;
@@ -60,10 +69,6 @@ i-command {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-rt {
-    font-size: calc(8vh / 6);
 }
 
 a {
